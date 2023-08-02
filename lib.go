@@ -80,7 +80,7 @@ func (l *Lib) Value(state *lua.LState) *lua.LTable {
 		state.SetField(mt, "__index", state.SetFuncs(state.NewTable(), methods))
 	}
 
-	return NewTable(state, vars, funcs)
+	return newTable(state, vars, funcs)
 }
 
 func (l *Lib) LuaDoc() string {

@@ -1,13 +1,10 @@
 package luadoc
 
 import (
-	"fmt"
 	lua "github.com/yuin/gopher-lua"
-	"reflect"
-	"strconv"
 )
 
-func NewTable(L *lua.LState, fields map[string]lua.LValue, funcs map[string]lua.LGFunction) *lua.LTable {
+func newTable(L *lua.LState, fields map[string]lua.LValue, funcs map[string]lua.LGFunction) *lua.LTable {
 	t := L.NewTable()
 	for k, v := range fields {
 		L.SetField(t, k, v)
