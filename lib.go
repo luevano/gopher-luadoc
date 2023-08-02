@@ -2,7 +2,6 @@ package luadoc
 
 import (
 	"fmt"
-	"github.com/mangalorg/luaprovider/util"
 	"github.com/samber/lo"
 	lua "github.com/yuin/gopher-lua"
 	"strings"
@@ -81,7 +80,7 @@ func (l *Lib) Value(state *lua.LState) *lua.LTable {
 		state.SetField(mt, "__index", state.SetFuncs(state.NewTable(), methods))
 	}
 
-	return util.NewTable(state, vars, funcs)
+	return NewTable(state, vars, funcs)
 }
 
 func (l *Lib) LuaDoc() string {

@@ -3,7 +3,6 @@ module github.com/mangalorg/gopher-luadoc
 go 1.20
 
 require (
-	github.com/mangalorg/luaprovider v0.5.0
 	github.com/samber/lo v1.38.1
 	github.com/yuin/gopher-lua v1.1.0
 )
