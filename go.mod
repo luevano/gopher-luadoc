@@ -1,10 +1,10 @@
 module github.com/mangalorg/gopher-luadoc
 
-go 1.20
+go 1.21
 
 require (
-	github.com/samber/lo v1.38.1
-	github.com/yuin/gopher-lua v1.1.0
+	github.com/samber/lo v1.39.0
+	github.com/yuin/gopher-lua v1.1.1
 )
 
-require golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df // indirect
+require golang.org/x/exp v0.0.0-20231226003508-02704c960a9b // indirect
