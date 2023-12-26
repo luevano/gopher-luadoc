@@ -1,4 +1,4 @@
-module github.com/mangalorg/gopher-luadoc
+module github.com/luevano/gopher-luadoc
 
 go 1.21
 
