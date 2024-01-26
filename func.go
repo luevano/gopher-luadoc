@@ -1,8 +1,9 @@
 package luadoc
 
 import (
-	lua "github.com/yuin/gopher-lua"
 	"strings"
+
+	lua "github.com/yuin/gopher-lua"
 )
 
 type Param struct {

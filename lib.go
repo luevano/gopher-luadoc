@@ -2,9 +2,10 @@ package luadoc
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/samber/lo"
 	lua "github.com/yuin/gopher-lua"
-	"strings"
 )
 
 type Lib struct {
@@ -55,7 +56,7 @@ func (l *Lib) Value(state *lua.LState) *lua.LTable {
 	}
 
 	for _, c := range l.Classes {
-		var methods = make(map[string]lua.LGFunction)
+		methods := make(map[string]lua.LGFunction)
 		for _, m := range c.Methods {
 			if m.Value == nil {
 				panic(fmt.Sprintf("method %s of class %s.%s has no value", m.Name, l.Name, c.Name))

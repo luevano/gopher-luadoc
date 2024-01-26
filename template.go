@@ -24,7 +24,7 @@ var templateLuaDocLib = template.Must(template.
 			return strings.Join(s, delim)
 		},
 		"params": func(s []*Param) []string {
-			var strings = make([]string, len(s))
+			strings := make([]string, len(s))
 			for i, v := range s {
 				strings[i] = v.String()
 			}
@@ -39,7 +39,7 @@ var templateLuaDocLib = template.Must(template.
 			return v.Type
 		},
 		"defineTypes": func(vars []*Var) string {
-			var custom = make(map[string]*Var, 0)
+			custom := make(map[string]*Var, 0)
 			for _, v := range vars {
 				if v.Type != "" {
 					custom[v.Type] = v

@@ -2,8 +2,9 @@ package luadoc
 
 import (
 	"fmt"
-	"github.com/samber/lo"
 	"strings"
+
+	"github.com/samber/lo"
 )
 
 const (
