@@ -1,6 +1,6 @@
 module github.com/luevano/gopher-luadoc
 
-go 1.22
+go 1.27.0
 
 require (
 	github.com/samber/lo v1.39.0
