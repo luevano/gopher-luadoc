@@ -3,8 +3,6 @@ package luadoc
 import (
 	"fmt"
 	"strings"
-
-	"github.com/samber/lo"
 )
 
 const (
@@ -39,9 +37,10 @@ func TableLiteral(keysAndValues ...string) string {
 }
 
 func Enum(members ...string) string {
-	quoted := lo.Map(members, func(s string, _ int) string {
-		return fmt.Sprintf(`'%s'`, s)
-	})
+	quoted := make([]string, len(members))
+	for i, member := range members {
+		quoted[i] = fmt.Sprintf(`'%s'`, member)
+	}
 
 	return strings.Join(quoted, " | ")
 }

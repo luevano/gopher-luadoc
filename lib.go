@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/samber/lo"
 	lua "github.com/yuin/gopher-lua"
 )
 
@@ -86,7 +85,10 @@ func (l *Lib) Value(state *lua.LState) *lua.LTable {
 
 func (l *Lib) LuaDoc() string {
 	var b strings.Builder
-	lo.Must0(templateLuaDocLib.Execute(&b, l))
+	// the template is fixed, it only fails on a bug
+	if err := templateLuaDocLib.Execute(&b, l); err != nil {
+		panic(err)
+	}
 
 	return b.String()
 }
