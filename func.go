@@ -43,9 +43,16 @@ func (f Func) AsType() string {
 	}
 	b.WriteString(")")
 
-	if len(f.Returns) > 0 {
-		b.WriteString(": ")
-		b.WriteString(f.Returns[0].Type)
+	for i, ret := range f.Returns {
+		if i == 0 {
+			b.WriteString(": ")
+		} else {
+			b.WriteString(", ")
+		}
+		b.WriteString(ret.Type)
+		if ret.Optional {
+			b.WriteString("?")
+		}
 	}
 
 	return b.String()
