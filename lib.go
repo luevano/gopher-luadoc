@@ -103,3 +103,12 @@ func (l *Lib) Loader() lua.LGFunction {
 		return 1
 	}
 }
+
+func (l *Lib) hasClass(name string) bool {
+	for _, c := range l.Classes {
+		if c.Name == name {
+			return true
+		}
+	}
+	return false
+}

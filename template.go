@@ -2,6 +2,8 @@ package luadoc
 
 import (
 	"fmt"
+	"maps"
+	"slices"
 	"strings"
 	"text/template"
 )
@@ -38,12 +40,14 @@ var templateLuaDocLib = template.Must(template.
 
 			return v.Type
 		},
-		"defineTypes": func(vars []*Var) string {
+		"defineTypes": func(lib *Lib) string {
 			custom := make(map[string]*Var, 0)
-			for _, v := range vars {
-				if v.Type != "" {
-					custom[v.Type] = v
+			for _, v := range lib.Vars {
+				// builtin types and classes already exist, an alias would shadow the class
+				if v.Type == "" || v.Type == v.Value.Type().String() || lib.hasClass(v.Type) {
+					continue
 				}
+				custom[v.Type] = v
 			}
 
 			if len(custom) == 0 {
@@ -51,8 +55,8 @@ var templateLuaDocLib = template.Must(template.
 			}
 
 			var b strings.Builder
-			for t, v := range custom {
-				b.WriteString(fmt.Sprintf("--- @alias %s %s\n", t, v.Value.Type().String()))
+			for _, t := range slices.Sorted(maps.Keys(custom)) {
+				b.WriteString(fmt.Sprintf("--- @alias %s %s\n", t, custom[t].Value.Type().String()))
 			}
 
 			return strings.TrimSpace(b.String())
@@ -64,7 +68,7 @@ var templateLuaDocLib = template.Must(template.
 -- DO NOT EDIT.
 
 {{- define "lib" }}
-{{- defineTypes .Vars }}
+{{- defineTypes . }}
 
 {{ doc .Description }}
 {{ doc "@class" }} {{ .Name }}
