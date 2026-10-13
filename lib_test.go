@@ -71,3 +71,23 @@ func TestFuncAsTypeHasAllReturns(t *testing.T) {
 		t.Errorf("wanted %q, got %q", want, got)
 	}
 }
+
+func TestLoaderInstallsRootMembers(t *testing.T) {
+	L := lua.NewState()
+	defer L.Close()
+	sub := &Lib{Name: "sub", Vars: []*Var{{Name: "x", Value: lua.LNumber(1)}}}
+	root := &Lib{
+		Name:  "root",
+		Vars:  []*Var{{Name: "version", Value: lua.LString("1.0")}},
+		Funcs: []*Func{{Name: "hi", Value: func(L *lua.LState) int { L.Push(lua.LString("hi")); return 1 }}},
+		Libs:  []*Lib{sub},
+	}
+	L.PreloadModule(root.Name, root.Loader())
+
+	if err := L.DoString(`local r = require("root"); result = r.version .. r.hi() .. r.sub.x`); err != nil {
+		t.Fatal(err)
+	}
+	if got := L.GetGlobal("result").String(); got != "1.0hi1" {
+		t.Errorf("got %q", got)
+	}
+}

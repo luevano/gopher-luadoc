@@ -93,15 +93,10 @@ func (l *Lib) LuaDoc() string {
 	return b.String()
 }
 
+// Loader is the module loader of the lib (for PreloadModule): its own members and its libs.
 func (l *Lib) Loader() lua.LGFunction {
 	return func(state *lua.LState) int {
-		libs := state.NewTable()
-
-		for _, lib := range l.Libs {
-			state.SetField(libs, lib.Name, lib.Value(state))
-		}
-
-		state.Push(libs)
+		state.Push(l.Value(state))
 		return 1
 	}
 }

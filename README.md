@@ -40,7 +40,7 @@ func main() {
 			Returns: []*luadoc.Param{{Name: "upper", Type: luadoc.String}},
 		}},
 	}
-	// the root lib only holds the others: require("mylib").text.upper("hi")
+	// the root lib can have its own members too: require("mylib").text.upper("hi")
 	lib := &luadoc.Lib{Name: "mylib", Libs: []*luadoc.Lib{text}}
 
 	L := lua.NewState()
