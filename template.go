@@ -22,6 +22,19 @@ var templateLuaDocLib = template.Must(template.
 
 			return strings.TrimSpace(b.String())
 		},
+		// inline descriptions (@field, @param, @return) end at the line's end
+		"inline": func(s string) string {
+			if !strings.Contains(s, "\n") {
+				return s
+			}
+			var lines []string
+			for _, line := range strings.Split(s, "\n") {
+				if line = strings.TrimSpace(line); line != "" {
+					lines = append(lines, line)
+				}
+			}
+			return strings.Join(lines, " ")
+		},
 		"join": func(s []string, delim string) string {
 			return strings.Join(s, delim)
 		},
@@ -73,10 +86,10 @@ var templateLuaDocLib = template.Must(template.
 {{ doc .Description }}
 {{ doc "@class" }} {{ .Name }}
 {{- range $var := .Vars }}
-{{ doc "@field" }} public {{ $var.Name }} {{ vartype $var }} {{ $var.Description }}
+{{ doc "@field" }} public {{ $var.Name }} {{ vartype $var }} {{ inline $var.Description }}
 {{- end }}
 {{- range $lib := .Libs }}
-{{ doc "@field" }} public {{ $lib.Name }} {{ $lib.Name }} {{ $lib.Description }}
+{{ doc "@field" }} public {{ $lib.Name }} {{ $lib.Name }} {{ inline $lib.Description }}
 {{- end }}
 local {{ .Name }} = {}
 
@@ -91,10 +104,10 @@ local {{ $class.Name }} = {}
 {{ doc "@generic" }} {{ $generic }}
 {{- end }}
 {{- range $param := $method.Params }}
-{{ doc "@param" }} {{ $param.Name }} {{ $param.Type }}{{ if $param.Optional }}?{{ end }} {{ $param.Description }}
+{{ doc "@param" }} {{ $param.Name }} {{ $param.Type }}{{ if $param.Optional }}?{{ end }} {{ inline $param.Description }}
 {{- end }}
 {{- range $return := $method.Returns }}
-{{ doc "@return" }} {{ $return.Type }}{{ if $return.Optional }}?{{ end }} {{ $return.Name }} {{ $return.Description }}
+{{ doc "@return" }} {{ $return.Type }}{{ if $return.Optional }}?{{ end }} {{ $return.Name }} {{ inline $return.Description }}
 {{- end }}
 function {{ $class.Name }}:{{ $method.Name }}({{ join (params $method.Params) ", " }})
 end
@@ -107,10 +120,10 @@ end
 {{ doc "@generic" }} {{ $generic }}
 {{- end }}
 {{- range $param := $func.Params }}
-{{ doc "@param" }} {{ $param.Name }} {{ $param.Type }}{{ if $param.Optional }}?{{ end }} {{ $param.Description }}
+{{ doc "@param" }} {{ $param.Name }} {{ $param.Type }}{{ if $param.Optional }}?{{ end }} {{ inline $param.Description }}
 {{- end }}
 {{- range $return := $func.Returns }}
-{{ doc "@return" }} {{ $return.Type }}{{ if $return.Optional }}?{{ end }} {{ $return.Name }} {{ $return.Description }}
+{{ doc "@return" }} {{ $return.Type }}{{ if $return.Optional }}?{{ end }} {{ $return.Name }} {{ inline $return.Description }}
 {{- end }}
 function {{ $.Name }}.{{ $func.Name }}({{ join (params $func.Params) ", " }})
 end

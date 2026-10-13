@@ -91,3 +91,31 @@ func TestLoaderInstallsRootMembers(t *testing.T) {
 		t.Errorf("got %q", got)
 	}
 }
+
+func TestLuaDocInlineDescriptions(t *testing.T) {
+	L := lua.NewState()
+	defer L.Close()
+	lib := &Lib{
+		Name:        "multi",
+		Description: "First line.\nSecond line.",
+		Vars:        []*Var{{Name: "v", Value: lua.LNumber(1), Description: "A var\n  over two lines."}},
+		Funcs: []*Func{{
+			Name:    "f",
+			Value:   func(*lua.LState) int { return 0 },
+			Params:  []*Param{{Name: "p", Type: String, Description: "A param\nover two lines."}},
+			Returns: []*Param{{Name: "r", Type: String, Description: "A return\n\nover two lines."}},
+		}},
+	}
+	doc := lib.LuaDoc()
+
+	for _, want := range []string{
+		"--- First line.\n--- Second line.",
+		"--- @field public v number A var over two lines.\n",
+		"--- @param p string A param over two lines.\n",
+		"--- @return string r A return over two lines.\n",
+	} {
+		if !strings.Contains(doc, want) {
+			t.Errorf("missing %q in:\n%s", want, doc)
+		}
+	}
+}
