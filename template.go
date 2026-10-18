@@ -14,7 +14,7 @@ var templateLuaDocLib = template.Must(template.
 		"doc": func(s string) string {
 			var b strings.Builder
 
-			for _, line := range strings.Split(s, "\n") {
+			for line := range strings.SplitSeq(s, "\n") {
 				b.WriteString("--- ")
 				b.WriteString(line)
 				b.WriteString("\n")
@@ -28,7 +28,7 @@ var templateLuaDocLib = template.Must(template.
 				return s
 			}
 			var lines []string
-			for _, line := range strings.Split(s, "\n") {
+			for line := range strings.SplitSeq(s, "\n") {
 				if line = strings.TrimSpace(line); line != "" {
 					lines = append(lines, line)
 				}
